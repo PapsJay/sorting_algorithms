@@ -1,73 +1,55 @@
 #include "sort.h"
-
 /**
- * quick_sort - function that sorts an array of integers
- *              in ascending order using the Quick sort algorithm
- * @array: array
- * @size: array's size
- * Return: void
+ * quick_sort - function that sorts an array
+ * of integers in ascending order
+ * @array: input arrray
+ * @size: size of the array
+ * Return: no return
  */
 void quick_sort(int *array, size_t size)
 {
-	if (array == NULL || size < 2)
-		return;
-
-	quick_s(array, 0, size - 1, size);
+	_qsort(array, 0, size - 1, size);
 }
-
 /**
- * partition - partition
- * @array: array
- * @lo: lower
- * @hi: higher
- * @size: array's size
- * Return: i
+ * _qsort - function for the
+ * quick_sort function
+ * @a: input arrray
+ * @low: index for the first element
+ * @high: index for the last element
+ * @size: size of the array
+ * Return: no return
  */
-int partition(int *array, int lo, int hi, size_t size)
+void _qsort(int *a, int low, int high, int size)
 {
-	int i = lo - 1, j = lo;
-	int pivot = array[hi], aux = 0;
+	int p, w, i;
+	int tmp;
 
-	for (; j < hi; j++)
+	if (low < high)
 	{
-		if (array[j] < pivot)
+		p = high;
+		w = low;
+		for (i = low; i < high; i++)
 		{
-			i++;
-			if (array[i] != array[j])
+			if (a[i] < a[p])
 			{
-				aux = array[i];
-				array[i] = array[j];
-				array[j] = aux;
-				print_array(array, size);
+				if (i != w)
+				{
+					tmp = a[i];
+					a[i] = a[w];
+					a[w] = tmp;
+					print_array(a, size);
+				}
+				w++;
 			}
 		}
-	}
-	if (array[i + 1] != array[hi])
-	{
-		aux = array[i + 1];
-		array[i + 1] = array[hi];
-		array[hi] = aux;
-		print_array(array, size);
-	}
-	return (i + 1);
-}
-
-/**
- * quick_s - quick sort
- * @array: given array
- * @lo: lower
- * @hi:higher
- * @size: array's size
- * Return: void
- */
-void quick_s(int *array, int lo, int hi, size_t size)
-{
-	int pivot;
-
-	if (lo < hi)
-	{
-		pivot = partition(array, lo, hi, size);
-		quick_s(array, lo, pivot - 1, size);
-		quick_s(array, pivot + 1, hi, size);
+		if (w != p && a[w] != a[p])
+		{
+			tmp = a[w];
+			a[w] = a[p];
+			a[p] = tmp;
+			print_array(a, size);
+		}
+		_qsort(a, low, w - 1, size);
+		_qsort(a, w + 1, high, size);
 	}
 }
